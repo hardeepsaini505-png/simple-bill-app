@@ -62,9 +62,10 @@ class Bill {
     required this.no,
     required this.client,
     required this.date,
+    String? type,
     required this.format,
     required this.items,
-  });
+  }) : type = type ?? 'invoice';
 
   double get total => items.fold(0, (s, i) => s + i.amount);
 
@@ -81,9 +82,9 @@ class Bill {
         no: j['no'] ?? '',
         client: j['client'] ?? '',
         date: j['date'] ?? '',
-        type: j['type'] ?? 'invoice',
+        type: (j['type'] ?? 'invoice').toString(),
         format: j['format'] ?? 1,
-        items: (j['items'] as List)
+        items: ((j['items'] as List?) ?? const [])
             .map((e) => BillItem.fromJson(Map<String, dynamic>.from(e)))
             .toList(),
       );
@@ -865,7 +866,6 @@ class BillPreview extends StatelessWidget {
     super.key,
     required this.firm,
     required this.no,
-    required this.type,
     required this.client,
     required this.date,
     required this.type,
