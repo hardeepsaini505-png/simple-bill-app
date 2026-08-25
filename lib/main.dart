@@ -189,23 +189,121 @@ class _EditBillState extends State<EditBill>{
     final d=await showDatePicker(context:context,initialDate:DateTime.tryParse(date)??DateTime.now(),firstDate:DateTime(2020),lastDate:DateTime(2100));
     if(d!=null)setState(()=>date=d.toIso8601String().substring(0,10));
   }
-  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.no)),body:Padding(padding:const EdgeInsets.all(12),child:Column(children:[
-    TextField(controller:widget.client,decoration:const InputDecoration(labelText:'Client Name',border:OutlineInputBorder())),
-    const SizedBox(height:8),
-    Row(children:[Expanded(child:Text('Date: $date')),TextButton(onPressed:chooseDate,child:const Text('Change'))]),
-    DropdownButtonFormField<int>(value:format,decoration:const InputDecoration(labelText:'Bill Format'),items:List.generate(50,(i)=>DropdownMenuItem(value:i+1,child:Text('Format ${i+1}'))),onChanged:(v)=>setState(()=>format=v??1)),
-    const SizedBox(height:10),
-    Expanded(child:items.isEmpty?const Center(child:Text('Add items')):ListView.builder(itemCount:items.length,itemBuilder:(_,i){final x=items[i];return Card(child:ListTile(
-      title:Text(x.name),subtitle:Text('Qty ${x.qty} × ₹${x.rate.toStringAsFixed(2)} = ₹${x.amount.toStringAsFixed(2)}'),
-      trailing:Wrap(children:[IconButton(onPressed:()=>addItem(x),icon:const Icon(Icons.edit)),IconButton(onPressed:()=>setState(()=>items.removeAt(i)),icon:const Icon(Icons.delete_outline))]),
-    );})),
-    Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children:[OutlinedButton.icon(onPressed:()=>addItem(),icon:const Icon(Icons.add),label:const Text('Add Item')),Text('Grand Total: ₹${total.toStringAsFixed(2)}',style:const TextStyle(fontSize:18,fontWeight:FontWeight.bold))]),
-    const SizedBox(height:10),
-    SizedBox(width:double.infinity,child:FilledButton.icon(onPressed:()async{
-      if(widget.client.text.trim().isEmpty){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('Client name likho')));return;}
-      if(items.isEmpty){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('Kam se kam 1 item add karo')));return;}
-      await widget.onSave(Bill(no:widget.no,client:widget.client.text.trim(),date:date,format:format,items:items));
-      if(context.mounted)Navigator.pop(context);
-    },icon:const Icon(Icons.save),label:const Text('Save Bill'))),
-  ])));
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.no)),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            TextField(
+              controller: widget.client,
+              decoration: const InputDecoration(
+                labelText: 'Client Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(child: Text('Date: $date')),
+                TextButton(onPressed: chooseDate, child: const Text('Change')),
+              ],
+            ),
+            DropdownButtonFormField<int>(
+              value: format,
+              decoration: const InputDecoration(labelText: 'Bill Format'),
+              items: List.generate(
+                50,
+                (i) => DropdownMenuItem(
+                  value: i + 1,
+                  child: Text('Format ${i + 1}'),
+                ),
+              ),
+              onChanged: (v) => setState(() => format = v ?? 1),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: items.isEmpty
+                  ? const Center(child: Text('Add items'))
+                  : ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, i) {
+                        final x = items[i];
+                        return Card(
+                          child: ListTile(
+                            title: Text(x.name),
+                            subtitle: Text(
+                              'Qty ${x.qty} × ₹${x.rate.toStringAsFixed(2)} = ₹${x.amount.toStringAsFixed(2)}',
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () => addItem(x),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () => setState(() => items.removeAt(i)),
+                                  icon: const Icon(Icons.delete_outline),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: () => addItem(),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Item'),
+                ),
+                Text(
+                  'Grand Total: ₹${total.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: () async {
+                  if (widget.client.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Client name likho')),
+                    );
+                    return;
+                  }
+                  if (items.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Kam se kam 1 item add karo')),
+                    );
+                    return;
+                  }
+                  await widget.onSave(
+                    Bill(
+                      no: widget.no,
+                      client: widget.client.text.trim(),
+                      date: date,
+                      format: format,
+                      items: items,
+                    ),
+                  );
+                  if (context.mounted) Navigator.pop(context);
+                },
+                icon: const Icon(Icons.save),
+                label: const Text('Save Bill'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
