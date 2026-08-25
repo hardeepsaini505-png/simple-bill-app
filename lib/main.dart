@@ -62,7 +62,6 @@ class Bill {
     required this.no,
     required this.client,
     required this.date,
-    required this.type,
     required this.format,
     required this.items,
   });
