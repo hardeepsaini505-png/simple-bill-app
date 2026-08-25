@@ -513,7 +513,7 @@ class _BillHomeState extends State<BillHome> {
             children: [
               pw.Text('Date: ${b.date}'),
               pw.SizedBox(height: 4),
-              pw.Text(isQuotation ? 'Quotation' : 'Invoice'),
+              pw.Text(b.type == 'quotation' ? 'Quotation' : 'Invoice'),
             ],
           ),
         ],
