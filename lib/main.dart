@@ -400,7 +400,7 @@ class _BillHomeState extends State<BillHome> {
           child: pw.Padding(
             padding: const pw.EdgeInsets.only(top: 12),
             child: pw.Text(
-              'Grand Total: ₹${b.total.toStringAsFixed(2)}',
+              'Grand Total: Rs. ${b.total.toStringAsFixed(2)}',
               style: pw.TextStyle(
                 fontSize: 16,
                 fontWeight: pw.FontWeight.bold,
@@ -1083,7 +1083,7 @@ class _BillHomeState extends State<BillHome> {
                         ),
                       ),
                       subtitle: Text(
-                        '${b.date}   |   Total: ₹${b.total.toStringAsFixed(2)}',
+                        '${b.date}   |   Total: Rs. ${b.total.toStringAsFixed(2)}',
                       ),
                       onTap: () => editBill(i),
                       trailing: Wrap(
@@ -1350,7 +1350,7 @@ class _EditBillState extends State<EditBill> {
                           child: ListTile(
                             title: Text(x.name),
                             subtitle: Text(
-                              'Qty ${x.qty} × ₹${x.rate.toStringAsFixed(2)} = ₹${x.amount.toStringAsFixed(2)}',
+                              'Qty ${x.qty} × Rs. ${x.rate.toStringAsFixed(2)} = Rs. ${x.amount.toStringAsFixed(2)}',
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -1381,7 +1381,7 @@ class _EditBillState extends State<EditBill> {
                   label: const Text('Add Item'),
                 ),
                 Text(
-                  'Grand Total: ₹${total.toStringAsFixed(2)}',
+                  'Grand Total: Rs. ${total.toStringAsFixed(2)}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -1550,7 +1550,7 @@ class BillPreview extends StatelessWidget {
           const Align(
             alignment: Alignment.centerRight,
             child: Text(
-              'Grand Total: ₹200.00',
+              'Grand Total: Rs. 200.00',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
